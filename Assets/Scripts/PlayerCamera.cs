@@ -9,22 +9,17 @@ public class PlayerCamera : MonoBehaviour
     public float minVerticalAngle = -30f;
     public float maxVerticalAngle = 40f;
 
-    private float currentYaw = 0f;
-    private float currentPitch = 0f;
+    private float yaw;
+    private float pitch;
 
     private void LateUpdate()
     {
-        if (!target) return;
+        if (target == null) return;
 
-        float horizontalInput = Input.GetAxis("Mouse X") * rotationSpeed;
-        float verticalInput = -Input.GetAxis("Mouse Y") * rotationSpeed;
+        yaw += Input.GetAxis("Mouse X") * rotationSpeed;
+        pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * rotationSpeed, minVerticalAngle, maxVerticalAngle);
 
-        currentYaw += horizontalInput;
-        currentPitch += verticalInput;
-
-        currentPitch = Mathf.Clamp(currentPitch, minVerticalAngle, maxVerticalAngle);
-
-        Quaternion rotation = Quaternion.Euler(currentPitch, currentYaw, 0);
+        Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
         Vector3 offset = rotation * new Vector3(0, height, -distance);
 
         transform.position = target.position + offset;
