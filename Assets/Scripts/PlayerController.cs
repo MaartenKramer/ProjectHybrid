@@ -38,7 +38,8 @@ public class PlayerController : MonoBehaviour
         if (inputDirection.magnitude >= 0.1f)
         {
             Vector3 moveDirection = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0) * inputDirection;
-            currentVelocity = Vector3.Lerp(currentVelocity, moveDirection * targetSpeed, Time.fixedDeltaTime * acceleration);
+
+            currentVelocity = moveDirection * targetSpeed;
 
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);

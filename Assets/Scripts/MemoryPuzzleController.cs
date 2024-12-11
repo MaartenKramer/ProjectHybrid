@@ -1,19 +1,22 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MemoryPuzzleController : MonoBehaviour
 {
     public static MemoryPuzzleController Instance;
-    private readonly int[] correctOrder = { 2, 1, 3, 4 };
-    private int currentStep = 0;
-    private Tile lastFailedTile = null;
-    private bool puzzleCompleted = false;
-    private Tile[] allTiles;
+
+    [Header("Tile Sequence")]
+    public List<int> correctOrder; // Define the sequence of tile IDs in the Inspector
 
     [Header("Audio Clips")]
     public AudioClip correctSound;
     public AudioClip incorrectSound;
     public AudioClip solvedSound;
 
+    private int currentStep = 0;
+    private Tile lastFailedTile = null;
+    private bool puzzleCompleted = false;
+    private Tile[] allTiles;
     private AudioSource audioSource;
 
     private void Awake()
@@ -36,13 +39,13 @@ public class MemoryPuzzleController : MonoBehaviour
         if (puzzleCompleted) return;
         if (lastFailedTile == tile) return;
 
-        if (tileID == correctOrder[currentStep])
+        if (currentStep < correctOrder.Count && tileID == correctOrder[currentStep])
         {
             tile.ActivateTile();
             PlaySound(correctSound);
             currentStep++;
 
-            if (currentStep >= correctOrder.Length)
+            if (currentStep >= correctOrder.Count)
             {
                 CompletePuzzle();
             }
