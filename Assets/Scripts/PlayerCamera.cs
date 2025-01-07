@@ -12,6 +12,11 @@ public class PlayerCamera : MonoBehaviour
     private float yaw;
     private float pitch;
 
+    public void SetCameraEnabled(bool isEnabled)
+    {
+        enabled = isEnabled;
+    }
+
     private void LateUpdate()
     {
         if (target == null) return;

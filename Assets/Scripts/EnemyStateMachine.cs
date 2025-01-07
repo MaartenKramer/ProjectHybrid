@@ -7,7 +7,7 @@ public class EnemyStateMachine : MonoBehaviour
     public Transform visibilityCone;
     public float spottingTime = 2f;
     public float chaseStoppingDistance = 2f;
-    public float gracePeriod = 2f; // Time enemy waits before resetting
+    public float gracePeriod = 2f;
 
     private int currentWaypoint = 0;
     private NavMeshAgent agent;
@@ -15,6 +15,7 @@ public class EnemyStateMachine : MonoBehaviour
     private float spottingTimer = 0f;
     private float resetTimer = 0f;
     private Vector3 initialPosition;
+    private int initialWaypoint;
 
     private enum EnemyState { Patrol, Alert, Chase, WaitBeforeReset, Reset }
     private EnemyState currentState = EnemyState.Patrol;
@@ -24,6 +25,7 @@ public class EnemyStateMachine : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         player = GameObject.FindGameObjectWithTag("Player").transform;
         initialPosition = transform.position;
+        initialWaypoint = currentWaypoint;
         agent.SetDestination(waypoints[currentWaypoint].position);
     }
 
@@ -31,21 +33,11 @@ public class EnemyStateMachine : MonoBehaviour
     {
         switch (currentState)
         {
-            case EnemyState.Patrol:
-                Patrol();
-                break;
-            case EnemyState.Alert:
-                Alert();
-                break;
-            case EnemyState.Chase:
-                Chase();
-                break;
-            case EnemyState.WaitBeforeReset:
-                WaitBeforeReset();
-                break;
-            case EnemyState.Reset:
-                ResetState();
-                break;
+            case EnemyState.Patrol: Patrol(); break;
+            case EnemyState.Alert: Alert(); break;
+            case EnemyState.Chase: Chase(); break;
+            case EnemyState.WaitBeforeReset: WaitBeforeReset(); break;
+            case EnemyState.Reset: ResetState(); break;
         }
     }
 
@@ -65,13 +57,19 @@ public class EnemyStateMachine : MonoBehaviour
 
     private void Alert()
     {
+        agent.isStopped = true;
+
+        Vector3 directionToPlayer = (player.position - transform.position).normalized;
+        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 60f * Time.deltaTime);
+
         spottingTimer += Time.deltaTime;
         UpdateConeColor(spottingTimer / spottingTime);
 
         if (spottingTimer >= spottingTime)
         {
+            agent.isStopped = false;
             currentState = EnemyState.Chase;
-            agent.stoppingDistance = chaseStoppingDistance;
         }
         else if (!PlayerInCone())
         {
@@ -79,6 +77,7 @@ public class EnemyStateMachine : MonoBehaviour
             if (spottingTimer <= 0)
             {
                 spottingTimer = 0;
+                agent.isStopped = false;
                 currentState = EnemyState.Patrol;
             }
         }
@@ -87,11 +86,31 @@ public class EnemyStateMachine : MonoBehaviour
     private void Chase()
     {
         agent.SetDestination(player.position);
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending)
+        if (distanceToPlayer <= chaseStoppingDistance)
         {
-            currentState = EnemyState.WaitBeforeReset;
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
+            agent.ResetPath();
+            transform.position = Vector3.MoveTowards(transform.position, player.position, -0.01f);
             resetTimer = gracePeriod;
+            currentState = EnemyState.WaitBeforeReset;
+        }
+        else
+        {
+            PlayerController playerController = player.GetComponent<PlayerController>();
+            PlayerCamera playerCamera = player.GetComponentInChildren<PlayerCamera>();
+
+            if (playerController != null)
+            {
+                playerController.SetControlsEnabled(false);
+            }
+
+            if (playerCamera != null)
+            {
+                playerCamera.SetCameraEnabled(false);
+            }
         }
     }
 
@@ -101,17 +120,25 @@ public class EnemyStateMachine : MonoBehaviour
 
         if (resetTimer <= 0)
         {
+            CheckpointManager.Instance.ResetToCheckpoint(player.gameObject);
             currentState = EnemyState.Reset;
         }
     }
 
     private void ResetState()
     {
+        ResetToInitialState();
+    }
+
+    public void ResetToInitialState()
+    {
         spottingTimer = 0;
         resetTimer = 0;
         UpdateConeColor(0);
         transform.position = initialPosition;
-        currentWaypoint = 0;
+        currentWaypoint = initialWaypoint;
+        agent.isStopped = false;
+        agent.ResetPath();
         agent.SetDestination(waypoints[currentWaypoint].position);
         currentState = EnemyState.Patrol;
     }
@@ -138,7 +165,17 @@ public class EnemyStateMachine : MonoBehaviour
         Renderer coneRenderer = visibilityCone.GetComponent<Renderer>();
         if (coneRenderer != null)
         {
-            coneRenderer.material.color = Color.Lerp(Color.yellow, Color.red, t);
+            Color baseColor = Color.yellow;
+
+            Color.RGBToHSV(baseColor, out float hue, out float saturation, out float value);
+
+            hue = Mathf.Lerp(hue, 0f, t);
+
+            Color shiftedColor = Color.HSVToRGB(hue, saturation, value);
+
+            shiftedColor.a = coneRenderer.material.color.a;
+
+            coneRenderer.material.color = shiftedColor;
         }
     }
 }
