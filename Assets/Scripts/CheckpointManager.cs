@@ -34,18 +34,17 @@ public class CheckpointManager : MonoBehaviour
 
         if (playerController != null)
         {
-            playerController.SetControlsEnabled(false);
+            playerController.enabled = false;
         }
 
         if (playerCamera != null)
         {
-            playerCamera.SetCameraEnabled(false);
+            playerCamera.enabled = false;
         }
 
         Rigidbody rb = player.GetComponent<Rigidbody>();
         if (rb != null)
         {
-            rb.isKinematic = true;
             rb.linearVelocity = Vector3.zero;
             rb.angularVelocity = Vector3.zero;
             player.transform.position = playerCheckpointPosition;
@@ -56,14 +55,25 @@ public class CheckpointManager : MonoBehaviour
             player.transform.position = playerCheckpointPosition;
         }
 
-        if (playerController != null)
+        foreach (EnemyStateMachine enemy in allEnemies)
         {
-            playerController.SetControlsEnabled(true);
+            if (enemy != null)
+            {
+                enemy.ResetToInitialState();
+            }
         }
 
-        if (playerCamera != null)
+        FadeManager.Instance.FadeIn(() =>
         {
-            playerCamera.SetCameraEnabled(true);
-        }
+            if (playerController != null)
+            {
+                playerController.enabled = true;
+            }
+
+            if (playerCamera != null)
+            {
+                playerCamera.enabled = true;
+            }
+        });
     }
 }

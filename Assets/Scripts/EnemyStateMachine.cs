@@ -116,6 +116,11 @@ public class EnemyStateMachine : MonoBehaviour
 
     private void WaitBeforeReset()
     {
+        if (resetTimer == gracePeriod)
+        {
+            FadeManager.Instance.FadeOut();
+        }
+
         resetTimer -= Time.deltaTime;
 
         if (resetTimer <= 0)
@@ -124,6 +129,8 @@ public class EnemyStateMachine : MonoBehaviour
             currentState = EnemyState.Reset;
         }
     }
+
+
 
     private void ResetState()
     {
