@@ -36,14 +36,12 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Material 2
-  m_Shader: {fileID: -6465566751694194690, guid: a2d774a79c94b12449fd20a92ad8fc06, type: 3}
+  m_Name: Material 5
+  m_Shader: {fileID: -6465566751694194690, guid: 092fc1a5fe0d92d48ac4bba020b048ac, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _DISABLE_SSR_TRANSPARENT
-  - _NORMALMAP_TANGENT_SPACE
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -105,7 +103,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Maintexture:
-        m_Texture: {fileID: 2800000, guid: 82b1657d46f1ed0408c96b49f6362038, type: 3}
+        m_Texture: {fileID: 2800000, guid: b83169683b748be4398ddfe6a14c6183, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
@@ -210,7 +208,7 @@ Material:
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _HeightAmplitude: 0.02
-    - _HeightBlend: 1.04
+    - _HeightBlend: 3.03
     - _HeightCenter: 0.5
     - _HeightMapParametrization: 0
     - _HeightMax: 1
@@ -296,12 +294,12 @@ Material:
     - _terrainOffset: -0
     - _terrainSize: 45
     - _windintensity: 0.007
-    - _windspeed: 0.05
+    - _windspeed: 0.02
     - _windspeed2: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
-    - _Bottomcolor: {r: 0.54901963, g: 0.36078432, b: 0.15686275, a: 0}
+    - _Bottomcolor: {r: 0.38679248, g: 0.0529103, b: 0.0529103, a: 0}
     - _Color: {r: 0.14901961, g: 0.5411765, b: 0.33333334, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
@@ -311,7 +309,7 @@ Material:
     - _FarColor: {r: 0.3679245, g: 0.12669098, b: 0.16944133, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
-    - _NearColor: {r: 1, g: 0.99633855, b: 0.4764151, a: 1}
+    - _NearColor: {r: 1, g: 0.8283019, b: 0.504717, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
