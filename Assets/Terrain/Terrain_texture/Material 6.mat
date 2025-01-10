@@ -36,7 +36,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Material 5
+  m_Name: Material 6
   m_Shader: {fileID: -6465566751694194690, guid: 092fc1a5fe0d92d48ac4bba020b048ac, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -103,7 +103,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Maintexture:
-        m_Texture: {fileID: 2800000, guid: b83169683b748be4398ddfe6a14c6183, type: 3}
+        m_Texture: {fileID: 2800000, guid: dacebe4c44be6de4d86f58d6bd4e3a12, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MaskMap:
@@ -299,7 +299,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
-    - _Bottomcolor: {r: 0.38679248, g: 0.0529103, b: 0.0529103, a: 0}
+    - _Bottomcolor: {r: 0.16981131, g: 0.026432894, b: 0.115431, a: 0}
     - _Color: {r: 0.14901961, g: 0.5411765, b: 0.33333334, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
@@ -309,7 +309,7 @@ Material:
     - _FarColor: {r: 0.3679245, g: 0.12669098, b: 0.16944133, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
-    - _NearColor: {r: 1, g: 0.8283019, b: 0.504717, a: 1}
+    - _NearColor: {r: 0.6792453, g: 0.24670699, b: 0.24670699, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
