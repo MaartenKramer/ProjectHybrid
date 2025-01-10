@@ -16,6 +16,11 @@ public class PlayerController : MonoBehaviour
     private Vector3 currentVelocity;
     private float verticalVelocity;
 
+    public void SetControlsEnabled(bool isEnabled)
+    {
+        enabled = isEnabled;
+    }
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -38,7 +43,6 @@ public class PlayerController : MonoBehaviour
         if (inputDirection.magnitude >= 0.1f)
         {
             Vector3 moveDirection = Quaternion.Euler(0, cameraTransform.eulerAngles.y, 0) * inputDirection;
-
             currentVelocity = moveDirection * targetSpeed;
 
             Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
@@ -52,7 +56,6 @@ public class PlayerController : MonoBehaviour
         if (IsGrounded())
         {
             verticalVelocity = 0;
-
             if (Input.GetButtonDown("Jump"))
             {
                 verticalVelocity = jumpForce;
