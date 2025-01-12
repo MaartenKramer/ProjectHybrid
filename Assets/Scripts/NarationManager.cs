@@ -7,7 +7,7 @@ public class NarrationManager : MonoBehaviour
     public static NarrationManager Instance;
 
     public TextMeshProUGUI narrationText;
-    public AudioSource audioSource; // AudioSource for narration audio
+    public AudioSource audioSource;
     public float fadeDuration = 1f;
     public float displayDuration = 3f;
 
@@ -42,7 +42,6 @@ public class NarrationManager : MonoBehaviour
         float elapsedTime = 0f;
         Color color = narrationText.color;
 
-        // Fade in
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -53,7 +52,6 @@ public class NarrationManager : MonoBehaviour
 
         yield return new WaitForSeconds(displayDuration);
 
-        // Fade out
         elapsedTime = 0f;
         while (elapsedTime < fadeDuration)
         {
