@@ -301,17 +301,17 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
-    - _Bottomcolor: {r: 0.54901963, g: 0.36078432, b: 0.15686275, a: 0}
-    - _Color: {r: 0.14901961, g: 0.5411765, b: 0.33333334, a: 1}
+    - _Bottomcolor: {r: 0.16316594, g: 0.31446534, b: 0.31390318, a: 0}
+    - _Color: {r: 0.1393734, g: 0.18238991, b: 0.15959117, a: 1}
     - _DiffusionProfileAsset: {r: 0, g: 0, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _EmissiveColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissiveColorLDR: {r: 0, g: 0, b: 0, a: 1}
-    - _FarColor: {r: 0.3679245, g: 0.12669098, b: 0.16944133, a: 1}
+    - _FarColor: {r: 0.3247893, g: 0.5268862, b: 0.8679245, a: 1}
     - _InvPrimScale: {r: 1, g: 1, b: 0, a: 0}
     - _IridescenceThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
-    - _NearColor: {r: 1, g: 0.99633855, b: 0.4764151, a: 1}
+    - _NearColor: {r: 0.55389416, g: 0.84276724, b: 0.67815703, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _ThicknessRemap: {r: 0, g: 1, b: 0, a: 0}
     - _TransmittanceColor: {r: 1, g: 1, b: 1, a: 1}
