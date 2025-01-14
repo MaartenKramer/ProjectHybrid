@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 39fc317dbb510d14a9a63dafab172952
+guid: da03047f3a9426c4d8ad15aa8db276a4
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,28 +7,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: retopo_clothes
-    second: {fileID: 2100000, guid: c81f9aed291b0494c8590b883f13211c, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: retopo_eyes1
-    second: {fileID: 2100000, guid: 3f5d7ebfbcab13749a89da58e0c9d9c2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: retopo_fur
+      name: Fur
     second: {fileID: 2100000, guid: 5a2e42598855d764183042ade408cefe, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: retopo_nose1
+      name: HoedJas
+    second: {fileID: 2100000, guid: c81f9aed291b0494c8590b883f13211c, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Nose
     second: {fileID: 2100000, guid: 70f96e0a56cebb9428e1110a53989bd9, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: standardSurface1
+      name: UnderClothes
     second: {fileID: 2100000, guid: 93dc53d16262d6946a6631bbcf7ceacd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: eyes1
+    second: {fileID: 2100000, guid: 3f5d7ebfbcab13749a89da58e0c9d9c2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -64,10 +64,10 @@ ModelImporter:
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
     importPhysicalCameras: 1
-    importVisibility: 0
+    importVisibility: 1
     importBlendShapes: 1
-    importCameras: 0
-    importLights: 0
+    importCameras: 1
+    importLights: 1
     nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
@@ -93,7 +93,7 @@ ModelImporter:
     useFileScale: 1
     strictVertexDataChecks: 0
   tangentSpace:
-    normalSmoothAngle: 90
+    normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
@@ -114,7 +114,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: Controls
+    rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
