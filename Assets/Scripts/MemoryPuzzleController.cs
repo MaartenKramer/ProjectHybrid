@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,16 +7,24 @@ public class MemoryPuzzleController : MonoBehaviour
     public static MemoryPuzzleController Instance;
 
     [Header("Tile Sequence")]
-    public List<int> correctOrder; // Define the sequence of tile IDs in the Inspector
+    public List<int> correctOrder;
 
     [Header("Audio Clips")]
     public AudioClip correctSound;
     public AudioClip incorrectSound;
     public AudioClip solvedSound;
 
+    [Header("Objects to Fade Out")]
+    public List<GameObject> stones;
+    public List<GameObject> invisibleWalls;
+    public List<GameObject> reaction;
+    public List<GameObject> endingRemark;
+    public float fadeDuration = 2f;
+
     private int currentStep = 0;
     private Tile lastFailedTile = null;
     private bool puzzleCompleted = false;
+    private bool puzzleLocked = false;
     private Tile[] allTiles;
     private AudioSource audioSource;
 
@@ -36,7 +45,7 @@ public class MemoryPuzzleController : MonoBehaviour
 
     public void CheckTile(int tileID, Tile tile)
     {
-        if (puzzleCompleted) return;
+        if (puzzleCompleted || puzzleLocked) return;
         if (lastFailedTile == tile) return;
 
         if (currentStep < correctOrder.Count && tileID == correctOrder[currentStep])
@@ -60,14 +69,105 @@ public class MemoryPuzzleController : MonoBehaviour
     {
         puzzleCompleted = true;
         PlaySound(solvedSound);
-        UnityEngine.Debug.Log("Puzzle solved!");
+        Debug.Log("Puzzle solved!");
+
+        StartCoroutine(FadeOutObjects());
     }
 
     private void FailPuzzle(Tile tile)
     {
         lastFailedTile = tile;
         PlaySound(incorrectSound);
+        StartCoroutine(ShowFailureSequence());
+    }
+
+    private IEnumerator FadeOutObjects()
+    {
+        float elapsedTime = 0f;
+
+        // Get the initial materials and colors
+        Dictionary<Renderer, Color> initialColors = new Dictionary<Renderer, Color>();
+
+        foreach (GameObject obj in stones)
+        {
+            Renderer renderer = obj.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                initialColors[renderer] = renderer.material.color;
+            }
+        }
+
+        foreach (GameObject obj in invisibleWalls)
+        {
+            Renderer renderer = obj.GetComponent<Renderer>();
+            if (renderer != null)
+            {
+                initialColors[renderer] = renderer.material.color;
+            }
+        }
+
+        // Fade out effect
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float alpha = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
+
+            foreach (var pair in initialColors)
+            {
+                Renderer renderer = pair.Key;
+                Color color = pair.Value;
+                color.a = alpha;
+                renderer.material.color = color;
+            }
+
+            yield return null;
+        }
+
+        // Disable objects
+        foreach (GameObject obj in stones)
+        {
+            obj.SetActive(false);
+        }
+
+        foreach (GameObject obj in endingRemark)
+        {
+            obj.SetActive(true);
+        }
+
+        foreach (GameObject obj in invisibleWalls)
+        {
+            obj.SetActive(false);
+        }
+
+        Debug.Log("Objects faded out and disabled.");
+    }
+
+    private IEnumerator ShowFailureSequence()
+    {
+        puzzleLocked = true;
+
+        // Set all lights to red and turn them on
+        foreach (Tile tile in allTiles)
+        {
+            tile.SetLightColor(Color.red, true);
+        }
+
+        foreach (GameObject obj in reaction)
+        {
+            obj.SetActive(true);
+        }
+
+        yield return new WaitForSeconds(4f);
+
+        foreach (GameObject obj in reaction)
+        {
+            obj.SetActive(false);
+        }
+
+        // Reset puzzle and turn off all lights
         ResetPuzzle();
+
+        puzzleLocked = false;
     }
 
     private void ResetPuzzle()
@@ -80,7 +180,7 @@ public class MemoryPuzzleController : MonoBehaviour
             tile.ResetTile();
         }
 
-        UnityEngine.Debug.Log("Puzzle reset!");
+        Debug.Log("Puzzle reset!");
     }
 
     private void PlaySound(AudioClip clip)

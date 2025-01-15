@@ -3,6 +3,14 @@ using UnityEngine.AI;
 
 public class EnemyStateMachine : MonoBehaviour
 {
+
+    public AudioClip suspiciousSound;
+    public AudioClip alertSound;
+    private AudioSource audioSource;
+
+    private bool hasPlayedSuspiciousSound = false;
+    private bool hasPlayedAlertSound = false;
+
     public Transform[] waypoints;
     public Transform visibilityCone;
     public float spottingTime = 2f;
@@ -27,6 +35,7 @@ public class EnemyStateMachine : MonoBehaviour
         initialPosition = transform.position;
         initialWaypoint = currentWaypoint;
         agent.SetDestination(waypoints[currentWaypoint].position);
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -53,6 +62,7 @@ public class EnemyStateMachine : MonoBehaviour
         {
             currentState = EnemyState.Alert;
         }
+        hasPlayedSuspiciousSound = false;
     }
 
     private void Alert()
@@ -85,6 +95,12 @@ public class EnemyStateMachine : MonoBehaviour
 
     private void Chase()
     {
+        if (!hasPlayedAlertSound)
+        {
+            PlaySound(alertSound);
+            hasPlayedAlertSound = true;
+        }
+
         agent.SetDestination(player.position);
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
@@ -160,6 +176,11 @@ public class EnemyStateMachine : MonoBehaviour
             {
                 if (hit.transform.CompareTag("Player"))
                 {
+                    if (!hasPlayedSuspiciousSound)
+                    {
+                        PlaySound(suspiciousSound);
+                        hasPlayedSuspiciousSound = true;
+                    }
                     return true;
                 }
             }
@@ -183,6 +204,14 @@ public class EnemyStateMachine : MonoBehaviour
             shiftedColor.a = coneRenderer.material.color.a;
 
             coneRenderer.material.color = shiftedColor;
+        }
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (clip != null)
+        {
+            audioSource.PlayOneShot(clip);
         }
     }
 }

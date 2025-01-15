@@ -3,15 +3,19 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     public int tileID;
-    private Renderer tileRenderer;
-    private Color originalColor;
+
+    private Light tileLight;
+
+    private Color greenColor = new Color(0.52f, 1f, 0.38f); // Converted from #84FF62
+    private Color redColor = Color.red;
 
     private void Start()
     {
-        tileRenderer = GetComponent<Renderer>();
-        if (tileRenderer != null)
+        tileLight = GetComponentInChildren<Light>();
+        if (tileLight != null)
         {
-            originalColor = tileRenderer.material.color;
+            tileLight.enabled = false; // Ensure the light is off initially
+            tileLight.color = greenColor; // Set initial color to green
         }
     }
 
@@ -25,17 +29,30 @@ public class Tile : MonoBehaviour
 
     public void ActivateTile()
     {
-        if (tileRenderer != null)
+        if (tileLight != null)
         {
-            tileRenderer.material.color = originalColor * 1.5f;
+            tileLight.enabled = true; // Enable the light when activated
         }
     }
 
     public void ResetTile()
     {
-        if (tileRenderer != null)
+        if (tileLight != null)
         {
-            tileRenderer.material.color = originalColor;
+            tileLight.enabled = false; // Turn off the light
+            tileLight.color = greenColor; // Reset to green
+        }
+    }
+
+    public void SetLightColor(Color color, bool keepOn)
+    {
+        if (tileLight != null)
+        {
+            tileLight.color = color;
+            if (keepOn)
+            {
+                tileLight.enabled = true;
+            }
         }
     }
 }
