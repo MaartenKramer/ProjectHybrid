@@ -37,17 +37,6 @@ public class NFCReader : MonoBehaviour
                 
         }
 
-        if (trimmedData == "A0B7C70E")
-        {
-            if (SceneManager.GetActiveScene().name != "ENDscene")
-            {
-                LoadScene("ENDscene");
-            }
-        }
-            else
-            {
-            Debug.LogWarning("Unexpected UID or non-UID data: " + trimmedData);
-        }
     }
 
     void LoadScene(string sceneName)
