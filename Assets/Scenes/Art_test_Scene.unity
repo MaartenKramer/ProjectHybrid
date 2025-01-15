@@ -2049,7 +2049,7 @@ Terrain:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 460662195}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 994cb7d4dd84cfa49aac2a9d3017040f, type: 2}
   m_TreeDistance: 5000

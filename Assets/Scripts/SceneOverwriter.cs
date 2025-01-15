@@ -6,12 +6,12 @@ public class SimpleSceneSwitcher : MonoBehaviour
     void Update()
     {
         // Check for key press to load specific scenes
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Keypad1))
         {
             LoadScene("Art_test_Scene");
         }
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.Keypad2))
         {
             LoadScene("ENDscene");
         }

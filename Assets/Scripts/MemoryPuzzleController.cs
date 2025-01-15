@@ -46,13 +46,18 @@ public class MemoryPuzzleController : MonoBehaviour
     public void CheckTile(int tileID, Tile tile)
     {
         if (puzzleCompleted || puzzleLocked) return;
-        if (lastFailedTile == tile) return;
 
         if (currentStep < correctOrder.Count && tileID == correctOrder[currentStep])
         {
             tile.ActivateTile();
             PlaySound(correctSound);
             currentStep++;
+
+            var collider = tile.GetComponent<BoxCollider>();
+            if (collider != null)
+            {
+                collider.enabled = false;
+            }
 
             if (currentStep >= correctOrder.Count)
             {
@@ -64,6 +69,7 @@ public class MemoryPuzzleController : MonoBehaviour
             FailPuzzle(tile);
         }
     }
+
 
     private void CompletePuzzle()
     {
@@ -178,10 +184,18 @@ public class MemoryPuzzleController : MonoBehaviour
         foreach (Tile tile in allTiles)
         {
             tile.ResetTile();
+
+            // Re-enable the BoxCollider
+            var collider = tile.GetComponent<BoxCollider>();
+            if (collider != null)
+            {
+                collider.enabled = true;
+            }
         }
 
         Debug.Log("Puzzle reset!");
     }
+
 
     private void PlaySound(AudioClip clip)
     {
