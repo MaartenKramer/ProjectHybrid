@@ -3,13 +3,14 @@ using UnityEngine.AI;
 
 public class EnemyStateMachine : MonoBehaviour
 {
-
     public AudioClip suspiciousSound;
     public AudioClip alertSound;
     private AudioSource audioSource;
 
     private bool hasPlayedSuspiciousSound = false;
     private bool hasPlayedAlertSound = false;
+
+    private Animator animator;
 
     public Transform[] waypoints;
     public Transform visibilityCone;
@@ -23,6 +24,7 @@ public class EnemyStateMachine : MonoBehaviour
     private float spottingTimer = 0f;
     private float resetTimer = 0f;
     private Vector3 initialPosition;
+    private Quaternion initialRotation;
     private int initialWaypoint;
 
     private enum EnemyState { Patrol, Alert, Chase, WaitBeforeReset, Reset }
@@ -30,12 +32,25 @@ public class EnemyStateMachine : MonoBehaviour
 
     private void Start()
     {
+        animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-        initialPosition = transform.position;
-        initialWaypoint = currentWaypoint;
-        agent.SetDestination(waypoints[currentWaypoint].position);
         audioSource = GetComponent<AudioSource>();
+
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        if (player == null)
+        {
+            Debug.LogError("Player not found. Ensure the Player GameObject has the tag 'Player'.");
+            return;
+        }
+
+        initialPosition = transform.position;
+        initialRotation = transform.rotation;
+        initialWaypoint = currentWaypoint;
+
+        if (waypoints.Length > 0)
+        {
+            agent.SetDestination(waypoints[currentWaypoint].position);
+        }
     }
 
     private void Update()
@@ -56,6 +71,8 @@ public class EnemyStateMachine : MonoBehaviour
         {
             currentWaypoint = (currentWaypoint + 1) % waypoints.Length;
             agent.SetDestination(waypoints[currentWaypoint].position);
+            animator.SetBool("Idle", false);
+            animator.SetBool("Walking", true);
         }
 
         if (PlayerInCone())
@@ -67,6 +84,8 @@ public class EnemyStateMachine : MonoBehaviour
 
     private void Alert()
     {
+        animator.SetBool("Idle", false);
+        animator.SetBool("Walking", true);
         agent.isStopped = true;
 
         Vector3 directionToPlayer = (player.position - transform.position).normalized;
@@ -95,6 +114,8 @@ public class EnemyStateMachine : MonoBehaviour
 
     private void Chase()
     {
+        animator.SetBool("Idle", false);
+        animator.SetBool("Walking", true);
         if (!hasPlayedAlertSound)
         {
             PlaySound(alertSound);
@@ -113,25 +134,13 @@ public class EnemyStateMachine : MonoBehaviour
             resetTimer = gracePeriod;
             currentState = EnemyState.WaitBeforeReset;
         }
-        else
-        {
-            PlayerController playerController = player.GetComponent<PlayerController>();
-            PlayerCamera playerCamera = player.GetComponentInChildren<PlayerCamera>();
-
-            if (playerController != null)
-            {
-                playerController.SetControlsEnabled(false);
-            }
-
-            if (playerCamera != null)
-            {
-                playerCamera.SetCameraEnabled(false);
-            }
-        }
     }
 
     private void WaitBeforeReset()
     {
+        animator.SetBool("Idle", true);
+        animator.SetBool("Walking", false);
+
         if (resetTimer == gracePeriod)
         {
             FadeManager.Instance.FadeOut();
@@ -146,8 +155,6 @@ public class EnemyStateMachine : MonoBehaviour
         }
     }
 
-
-
     private void ResetState()
     {
         ResetToInitialState();
@@ -155,15 +162,33 @@ public class EnemyStateMachine : MonoBehaviour
 
     public void ResetToInitialState()
     {
-        spottingTimer = 0;
-        resetTimer = 0;
-        UpdateConeColor(0);
+        if (agent == null)
+        {
+            Debug.LogError("NavMeshAgent is missing or was not initialized for " + gameObject.name);
+            return;
+        }
+
+        // Reset position, rotation, and path
         transform.position = initialPosition;
+        transform.rotation = initialRotation;
+
         currentWaypoint = initialWaypoint;
         agent.isStopped = false;
         agent.ResetPath();
-        agent.SetDestination(waypoints[currentWaypoint].position);
+
+        if (waypoints.Length > 0)
+        {
+            agent.SetDestination(waypoints[currentWaypoint].position);
+        }
+
+        spottingTimer = 0;
+        resetTimer = 0;
+        hasPlayedSuspiciousSound = false;
+        hasPlayedAlertSound = false;
+
+        UpdateConeColor(0);
         currentState = EnemyState.Patrol;
+        Debug.Log($"Enemy {gameObject.name} reset to initial state.");
     }
 
     private bool PlayerInCone()
@@ -196,11 +221,9 @@ public class EnemyStateMachine : MonoBehaviour
             Color baseColor = Color.yellow;
 
             Color.RGBToHSV(baseColor, out float hue, out float saturation, out float value);
-
             hue = Mathf.Lerp(hue, 0f, t);
 
             Color shiftedColor = Color.HSVToRGB(hue, saturation, value);
-
             shiftedColor.a = coneRenderer.material.color.a;
 
             coneRenderer.material.color = shiftedColor;
