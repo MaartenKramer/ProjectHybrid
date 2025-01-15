@@ -7,8 +7,6 @@ public class EnemyStateMachine : MonoBehaviour
     public AudioClip alertSound;
     private AudioSource audioSource;
 
-    public bool isMoving = false;
-
     private bool hasPlayedSuspiciousSound = false;
     private bool hasPlayedAlertSound = false;
 
@@ -34,7 +32,7 @@ public class EnemyStateMachine : MonoBehaviour
 
     private void Start()
     {
-        animator = transform.Find("enemyIdleAnimationFINAL").GetComponent<Animator>();
+        animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         audioSource = GetComponent<AudioSource>();
 
@@ -57,20 +55,6 @@ public class EnemyStateMachine : MonoBehaviour
 
     private void Update()
     {
-        if (agent.velocity.sqrMagnitude > 0.1f) // Use sqrMagnitude to avoid costly square root calculation
-        {
-            isMoving = true;
-            animator.SetBool("Idle", false);
-            animator.SetBool("Walking", true);
-        }
-        else
-        {
-            isMoving = false;
-            animator.SetBool("Idle", true);
-            animator.SetBool("Walking", false);
-        }
-
-
         switch (currentState)
         {
             case EnemyState.Patrol: Patrol(); break;
@@ -87,6 +71,8 @@ public class EnemyStateMachine : MonoBehaviour
         {
             currentWaypoint = (currentWaypoint + 1) % waypoints.Length;
             agent.SetDestination(waypoints[currentWaypoint].position);
+            animator.SetBool("Idle", false);
+            animator.SetBool("Walking", true);
         }
 
         if (PlayerInCone())
@@ -98,6 +84,8 @@ public class EnemyStateMachine : MonoBehaviour
 
     private void Alert()
     {
+        animator.SetBool("Idle", false);
+        animator.SetBool("Walking", true);
         agent.isStopped = true;
 
         Vector3 directionToPlayer = (player.position - transform.position).normalized;
@@ -126,6 +114,8 @@ public class EnemyStateMachine : MonoBehaviour
 
     private void Chase()
     {
+        animator.SetBool("Idle", false);
+        animator.SetBool("Walking", true);
         if (!hasPlayedAlertSound)
         {
             PlaySound(alertSound);
@@ -148,6 +138,8 @@ public class EnemyStateMachine : MonoBehaviour
 
     private void WaitBeforeReset()
     {
+        animator.SetBool("Idle", true);
+        animator.SetBool("Walking", false);
 
         if (resetTimer == gracePeriod)
         {
