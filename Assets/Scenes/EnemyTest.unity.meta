@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/EnemyTest.unity.meta
 guid: 5e2e0347cfc93a5449d1044e6a62533b
+========
+guid: 268ece6cce67595409b82ca8b006e47e
+folderAsset: yes
+>>>>>>>> skybox:Assets/Materials/TEXkatgrond.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

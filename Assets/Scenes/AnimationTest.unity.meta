@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/AnimationTest.unity.meta
 guid: 6cfb718518bf20a4b9add8d4cb0a8770
+========
+guid: 830af29b99f89d84fa4bdde88a949cbf
+>>>>>>>> skybox:Assets/Scenes/portalVFX.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

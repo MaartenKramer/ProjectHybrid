@@ -3240,7 +3240,7 @@
     "m_ObjectId": "494b1dbefb604cf6b54882e72308e13b",
     "m_Title": "terraincolor",
     "m_Position": {
-        "x": -1964.0001220703125,
+        "x": -1964.0,
         "y": 270.0
     }
 }
@@ -5242,8 +5242,8 @@
     "m_ObjectId": "93ebff7ba68141558b00c83186b73948",
     "m_Title": "Depth",
     "m_Position": {
-        "x": -2166.000244140625,
-        "y": -222.00001525878907
+        "x": -2166.0,
+        "y": -222.0
     }
 }
 
@@ -7073,7 +7073,7 @@
     "m_ObjectId": "dc773d3472bd4208bb9fc21add810a70",
     "m_Title": "heightblend",
     "m_Position": {
-        "x": -1653.000244140625,
+        "x": -1653.0,
         "y": 695.0
     }
 }

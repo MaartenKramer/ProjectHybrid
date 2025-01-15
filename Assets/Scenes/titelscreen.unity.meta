@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Scenes/titelscreen.unity.meta
 guid: 9091fb82aa5518849970bff17d6d68c5
 DefaultImporter:
+========
+guid: d65944fdee68c8c46bc3f274c389c828
+PrefabImporter:
+>>>>>>>> skybox:Assets/Prefabs/Thijmen/FloorProjection.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
