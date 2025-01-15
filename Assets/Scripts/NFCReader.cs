@@ -39,7 +39,7 @@ public class NFCReader : MonoBehaviour
 
         if (trimmedData == "A0B7C70E")
         {
-            if (SceneManager.GetActiveScene().name != "Art_test_Scene")
+            if (SceneManager.GetActiveScene().name != "ENDscene")
             {
                 LoadScene("ENDscene");
             }
