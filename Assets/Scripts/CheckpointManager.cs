@@ -29,63 +29,50 @@ public class CheckpointManager : MonoBehaviour
     }
 
     public void ResetToCheckpoint(GameObject player)
-    {
-        // Disable player controls
-        PlayerController playerController = player.GetComponent<PlayerController>();
-        PlayerCamera playerCamera = player.GetComponentInChildren<PlayerCamera>();
+{
+    PlayerController playerController = player.GetComponent<PlayerController>();
+    PlayerCamera playerCamera = player.GetComponentInChildren<PlayerCamera>();
+    Rigidbody rb = player.GetComponent<Rigidbody>();
 
+    if (playerController != null)
+    {
+        playerController.enabled = false;
+    }
+
+    if (playerCamera != null)
+    {
+        playerCamera.enabled = false;
+    }
+
+    if (rb != null)
+    {
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.isKinematic = true; // Ensure physics is locked
+    }
+
+    player.transform.position = playerCheckpointPosition;
+
+    Debug.Log("Player position and controls have been reset.");
+
+    FadeManager.Instance.FadeIn(() =>
+    {
         if (playerController != null)
         {
-            playerController.enabled = false;
+            playerController.enabled = true;
         }
 
         if (playerCamera != null)
         {
-            playerCamera.enabled = false;
+            playerCamera.enabled = true;
         }
-
-        // Reset player position and physics
-        Rigidbody rb = player.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-            rb.isKinematic = true; // Temporarily disable physics for reset
-        }
-
-        player.transform.position = playerCheckpointPosition;
 
         if (rb != null)
         {
             rb.isKinematic = false; // Re-enable physics
         }
 
-        // Reset all enemies to their initial state
-        foreach (EnemyStateMachine enemy in allEnemies)
-        {
-            if (enemy != null)
-            {
-                enemy.ResetToInitialState();
-            }
-            else
-            {
-                Debug.LogWarning("An enemy in the allEnemies array is null. It might have been destroyed.");
-            }
-        }
-
-        // Fade back in and re-enable player controls
-        FadeManager.Instance.FadeIn(() =>
-        {
-            Debug.Log("Fade completed. Re-enabling player components.");
-            if (playerController != null)
-            {
-                playerController.enabled = true;
-            }
-
-            if (playerCamera != null)
-            {
-                playerCamera.enabled = true;
-            }
-        });
-    }
+        Debug.Log("Player controls re-enabled after fade.");
+    });
+}
 }

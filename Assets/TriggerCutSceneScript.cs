@@ -38,6 +38,10 @@ public class TriggerCutSceneScript : MonoBehaviour
             Debug.Log("Raw message received: " + message);
             ProcessData(message);
         }
+
+        if (Input.GetKeyDown(KeyCode.Keypad3)) {
+            StartCoroutine(TriggerCutscene());
+        }
     }
 
     void OnTriggerEnter(Collider other)

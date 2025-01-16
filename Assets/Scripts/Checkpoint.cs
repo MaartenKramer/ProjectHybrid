@@ -6,7 +6,7 @@ public class Checkpoint : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Vector3 checkpointPosition = transform.position;
+            Vector3 checkpointPosition = this.transform.position;
             Debug.Log($"Player reached checkpoint at position: {checkpointPosition}");
             CheckpointManager.Instance.SetCheckpoint(checkpointPosition);
         }
